@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Pravaha</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+    body { background:#f9fafc; color:#333; }
+
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 8%; background:linear-gradient(90deg,#5a189a,#00b4d8);
+      color:#fff; position:sticky; top:0; z-index:999;
+    }
+    header h1 { font-size:1.6rem; font-weight:700; }
+    nav ul { display:flex; list-style:none; gap:25px; }
+    nav ul li a { text-decoration:none; color:#fff; font-weight:500; }
+    nav ul li a:hover { color:#ffd60a; }
+
+    .login-btn, .lang-btn {
+      padding:8px 20px; border-radius:20px;
+      font-weight:600; cursor:pointer; border:none;
+    }
+    .login-btn { background:#ffd60a; color:#000; text-decoration:none; }
+    .login-btn:hover { background:#ffb703; }
+    .lang-btn { background:#333; color:#fff; margin-left:10px; }
+
+    .lang-menu {
+      display:none; position:absolute; right:8%; top:70px;
+      background:#fff; border-radius:10px;
+      box-shadow:0 6px 12px rgba(0,0,0,0.2); overflow:hidden;
+    }
+    .lang-menu.open { display:block; }
+    .lang-menu button {
+      display:block; padding:10px 20px; width:100%; border:none;
+      background:none; text-align:left; cursor:pointer;
+    }
+    .lang-menu button:hover { background:#f1f1f1; }
+
+    /* Hero Section */
+    .hero {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:60px 8%; background:linear-gradient(120deg,#e0c3fc,#8ec5fc);
+      flex-wrap:wrap;
+    }
+    .hero-text { max-width:600px; }
+    .hero-text h2 { font-size:2.5rem; color:#5a189a; margin-bottom:20px; }
+    .hero-text p { font-size:1.1rem; color:#333; line-height:1.8; }
+    .hero-img img { width:420px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+
+    /* Mission & Vision */
+    .section { padding:60px 8%; text-align:center; }
+    .section h2 { font-size:2rem; color:#5a189a; margin-bottom:20px; }
+    .section p { font-size:1.1rem; color:#444; max-width:900px; margin:0 auto 30px; line-height:1.8; }
+
+    /* Team Section */
+    .team { background:#f8f9ff; padding:60px 8%; }
+    .team h2 { text-align:center; font-size:2rem; color:#5a189a; margin-bottom:40px; }
+    .team-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:30px;
+    }
+    .team-card {
+      background:#fff; padding:20px; border-radius:15px; text-align:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.1); transition:transform .3s ease;
+    }
+    .team-card:hover { transform:translateY(-10px); }
+    .team-card img {
+      width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:15px;
+    }
+    .team-card h3 { font-size:1.2rem; color:#5a189a; margin-bottom:8px; }
+    .team-card p { color:#666; font-size:0.95rem; }
+
+    footer { background:#5a189a; color:#fff; padding:20px; text-align:center; margin-top:40px; }
+    #google_translate_element { display:none; }
+  </style>
+</head>
+<body>
+
+  <!-- set cookie before translate loads -->
+  <script>
+    function setCookie(name,value,days){
+      var expires=''; if(days){var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); expires='; expires='+d.toUTCString();}
+      try{document.cookie=name+'='+value+expires+'; path=/';}catch(e){}
+      try{document.cookie=name+'='+value+expires+'; path=/; domain='+location.hostname;}catch(e){}
+      try{document.cookie=name+'='+value+expires+'; path=/; domain=.'+location.hostname;}catch(e){}
+    }
+    (function applySaved(){
+      var saved=localStorage.getItem('preferredLang');
+      if(saved&&saved!=='en'){ setCookie('googtrans','/en/'+saved,365); }
+      else{ setCookie('googtrans','/en/en',365); }
+    })();
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>Pravaha</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div>
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2>About Pravaha</h2>
+      <p>
+        Pravaha is India’s first AI-powered multilingual localization engine designed 
+        to make education inclusive and accessible. By bridging the language divide, 
+        we help millions of learners access skill-based content in their own mother tongue.
+      </p>
+    </div>
+    <div class="hero-img">
+      <img src="https://www.euroschoolindia.com/blogs/wp-content/uploads/2023/07/importance-of-education.jpg" alt="About Us">
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="section">
+    <h2>Our Mission</h2>
+    <p>
+      To democratize access to education by providing high-quality localized content 
+      in all major Indian languages. We aim to empower rural learners and bridge 
+      the gap between technology and inclusivity.
+    </p>
+    <img src="https://img.freepik.com/free-vector/online-courses-concept_23-2148517735.jpg?semt=ais_incoming&w=740&q=80" alt="Mission" style="border-radius:15px; margin-top:20px; width:100%; max-width:800px;">
+  </section>
+
+  <!-- VISION -->
+  <section class="section">
+    <h2>Our Vision</h2>
+    <p>
+      A future where language is no longer a barrier to learning. Pravaha envisions 
+      an India where every learner can grow, skill up, and thrive in their own language, 
+      making education truly accessible to all.
+    </p>
+    <img src="https://anaheimelementary.org/wp-content/uploads/2016/06/Goal_Vision.jpg" alt="Vision" style="border-radius:15px; margin-top:20px; width:100%; max-width:800px;">
+  </section>
+
+  <!-- TEAM -->
+  <section class="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <img src="https://i.pinimg.com/236x/34/d5/46/34d5461c71f610cb2c885a04313a069a.jpg" alt="Team Member">
+        <h3>Vennela</h3>
+        <p>Founder & CEO</p>
+      </div>
+      <div class="team-card">
+        <img src="https://i.pinimg.com/736x/8e/e2/1b/8ee21b83383ff8da1fa36e59a82ed053.jpg" alt="Team Member">
+        <h3>Divya</h3>
+        <p>Head of AI Research</p>
+      </div>
+      <div class="team-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcTlHOIDT1fFfYhabUc7o-Pc08bqihLYc5XDKW-xRGFlUQJDs-rDs-IDKKxB1tl_m1wPY&usqp=CAU" alt="Team Member">
+        <h3>Harshit Paradeshi</h3>
+        <p>Lead Developer</p>
+      </div>
+      <div class="team-card">
+        <img src="https://i.pinimg.com/236x/b7/0b/74/b70b74ed6eec3e2bd1a55421ae227793.jpg" alt="Team Member">
+        <h3>Pooja</h3>
+        <p>UI/UX Designer</p>
+      </div>
+       <div class="team-card">
+        <img src="https://static.vecteezy.com/system/resources/previews/024/183/502/non_2x/male-avatar-portrait-of-a-young-man-with-a-beard-illustration-of-male-character-in-modern-color-style-vector.jpg" alt="Team Member">
+        <h3>G.Nikhil</h3>
+        <p>UI/UX Designer</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <script>
+    function googleTranslateElementInit(){
+      new google.translate.TranslateElement({
+        pageLanguage:'en',
+        includedLanguages:'en,hi,bn,te,ta,ml,kn,mr,gu,pa'
+      },'google_translate_element');
+      var saved=localStorage.getItem('preferredLang');
+      if(saved&&saved!=='en'){ setTimeout(function(){ trySetCombo(saved); },600); }
+    }
+
+    function trySetCombo(lang){
+      var combo=document.querySelector('.goog-te-combo');
+      if(!combo) return;
+      try{ combo.value=lang; combo.dispatchEvent(new Event('change')); }catch(e){}
+    }
+
+    (function attachLangUI(){
+      var langBtn=document.getElementById('langBtn');
+      var langMenu=document.getElementById('langMenu');
+      langBtn.addEventListener('click',function(e){
+        e.stopPropagation(); langMenu.classList.toggle('open');
+      });
+      langMenu.addEventListener('click',function(e){
+        var btn=e.target.closest('button[data-lang]');
+        if(!btn) return;
+        var lang=btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang',lang);
+        setCookie('googtrans','/en/'+lang,365);
+        setTimeout(function(){ window.location.reload(); },250);
+      });
+      document.addEventListener('click',function(e){
+        if(!langBtn.contains(e.target) && !langMenu.contains(e.target)){ langMenu.classList.remove('open'); }
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses – Pravaha</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+body{background:#f9fafc;color:#333}
+
+/* NAVBAR */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 8%;
+  background:linear-gradient(90deg,#5a189a,#00b4d8);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+
+header h1{font-size:1.6rem;font-weight:700}
+
+nav ul{
+  display:flex;
+  list-style:none;
+  gap:25px
+}
+
+nav ul li a{
+  text-decoration:none;
+  color:#fff;
+  font-weight:500
+}
+
+nav ul li a:hover{color:#ffd60a}
+
+/* NAV CONTROLS */
+.nav-controls{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  position:relative;
+}
+
+.login-btn,.lang-btn{
+  padding:8px 20px;
+  border-radius:20px;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+}
+
+.login-btn{background:#ffd60a;color:#000}
+.lang-btn{background:#333;color:#fff}
+
+/* LANGUAGE DROPDOWN */
+.lang-menu{
+  position:absolute;
+  right:0;
+  top:calc(100% + 8px);
+  background:#fff;
+  color:#222;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
+  overflow:hidden;
+  min-width:180px;
+
+  opacity:0;
+  pointer-events:none;
+  transform:scale(0.95);
+  transform-origin:top right;
+  transition:all 160ms ease;
+  z-index:1000;
+}
+
+.lang-menu.open{
+  opacity:1;
+  pointer-events:auto;
+  transform:scale(1);
+}
+
+.lang-menu button{
+  display:block;
+  width:100%;
+  padding:10px 14px;
+  border:none;
+  background:none;
+  text-align:left;
+  cursor:pointer;
+  font-size:0.95rem;
+}
+
+.lang-menu button:hover{
+  background:#f5f5f8;
+}
+
+/* CONTENT */
+.container{padding:60px 8%}
+h2{text-align:center;color:#5a189a;font-size:2.6rem;margin-bottom:30px}
+
+/* MODE SELECTION */
+.mode-box{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:50px
+}
+
+.mode-card{
+  width:320px;
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+  cursor:pointer;
+  transition:.3s;
+  text-align:center
+}
+
+.mode-card:hover{transform:translateY(-8px)}
+.mode-card h3{color:#5a189a;margin-bottom:10px}
+.mode-card p{font-size:.95rem;color:#444}
+
+footer{
+  background:#5a189a;
+  color:#fff;
+  text-align:center;
+  padding:20px;
+  margin-top:60px
+}
+
+/* hide google UI */
+#google_translate_element{display:none}
+</style>
+</head>
+
+<body>
+
+<!-- LANGUAGE COOKIE -->
+<script>
+function setCookie(name,value,days){
+  var expires="";
+  if(days){
+    var d=new Date();
+    d.setTime(d.getTime()+days*24*60*60*1000);
+    expires="; expires="+d.toUTCString();
+  }
+  document.cookie=name+"="+value+expires+"; path=/";
+}
+(function(){
+  let l=localStorage.getItem("preferredLang");
+  setCookie("googtrans",l?"/en/"+l:"/en/en",365);
+})();
+</script>
+
+<header>
+  <h1>Pravaha</h1>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="courses.html">Courses</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="nav-controls">
+    <a href="login.html" class="login-btn">Login/Register</a>
+    <button class="lang-btn" id="langBtn">🌐 Language</button>
+
+    <div class="lang-menu" id="langMenu">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">Hindi (हिन्दी)</button>
+      <button data-lang="bn">Bengali (বাংলা)</button>
+      <button data-lang="te">Telugu (తెలుగు)</button>
+      <button data-lang="ta">Tamil (தமிழ்)</button>
+      <button data-lang="ml">Malayalam (മലയാളം)</button>
+      <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+      <button data-lang="mr">Marathi (मराठी)</button>
+      <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+      <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <h2>Choose Learning Mode</h2>
+
+  <div class="mode-box">
+
+    <div class="mode-card">
+  <h3>🤟 Specially Abled Learners</h3>
+  <p>
+    Designed for deaf and hearing-impaired learners using sign language,
+    live captions, and multilingual support.
+  </p>
+  <button class="login-btn"
+    onclick="window.location.href='special-abled.html'">
+    Open Specially Abled Mode
+  </button>
+</div>
+
+
+    <div class="mode-card">
+      <h3>📘 Courses for All</h3>
+      <p>
+        Regular skill courses with multilingual subtitles and audio-visual
+        content.
+      </p>
+      <button class="login-btn" onclick="window.location.href='courses-all.html'">
+        📘 Courses for All
+      </button>
+    </div>
+
+  </div>
+  <!-- MOTIVATIONAL VIDEO SECTION -->
+<section class="motivation-video" style="margin-top:60px;text-align:center;">
+
+  <h2 style="font-size:2rem;color:#5a189a;margin-bottom:20px;">
+    🌟 Learning Has No Barriers
+  </h2>
+
+  <p style="max-width:800px;margin:0 auto 30px;font-size:1.1rem;line-height:1.7;">
+    Education should be inclusive, accessible, and empowering for everyone.
+    At Pravaha, we believe that language, ability, or background should never
+    stop anyone from learning and growing.
+  </p>
+
+  <div style="max-width:900px;margin:0 auto;">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      controls
+      style="
+        width:80%;
+        height:45vh;
+        max-width:900px;
+        border-radius:20px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.15);
+      "
+    >
+      <source src="260283.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+</section>
+
+  
+</main>
+
+<footer>
+  <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+</footer>
+
+<div id="google_translate_element"></div>
+
+  <script>
+    // reuse setCookie if missing
+    if (typeof setCookie !== 'function') {
+      function setCookie(name, value, days) {
+        var expires = '';
+        if (days) { var d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000)); expires = '; expires=' + d.toUTCString(); }
+        try { document.cookie = name + '=' + value + expires + '; path=/'; } catch(e){}
+      }
+    }
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa'
+      }, 'google_translate_element');
+
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setTimeout(function(){ trySetCombo(saved); }, 600);
+      }
+    }
+
+    function trySetCombo(lang) {
+      var combo = document.querySelector('.goog-te-combo');
+      if (!combo) return;
+      try { combo.value = lang; combo.dispatchEvent(new Event('change')); } catch(e){}
+    }
+
+    (function attachLangUI(){
+      var langBtn = document.getElementById('langBtn');
+      var langMenu = document.getElementById('langMenu');
+
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        langMenu.classList.toggle('open');
+      });
+
+      langMenu.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-lang]');
+        if (!btn) return;
+        var lang = btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans', '/en/' + lang, 365);
+        setTimeout(function(){ window.location.reload(); }, 250);
+      });
+
+      document.addEventListener('click', function(e){
+        if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+          langMenu.classList.remove('open');
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') langMenu.classList.remove('open');
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+</body>
+</html>

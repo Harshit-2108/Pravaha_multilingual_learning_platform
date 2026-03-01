@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pravaha – Multilingual AI Engine</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: #f9fafc; color: #333; }
+
+    /* NAVBAR */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 8%; background: linear-gradient(90deg, #5a189a, #00b4d8);
+      color: #fff; position: sticky; top: 0; z-index: 999;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: 1px; }
+    nav ul { display: flex; list-style: none; gap: 25px; }
+    nav ul li a { text-decoration: none; color: #fff; font-weight: 500; transition: color 0.3s; }
+    nav ul li a:hover { color: #ffd60a; }
+
+    /* login + language container */
+    .nav-controls { display: flex; align-items: center; gap: 15px; position: relative; }
+    .login-btn, .lang-btn {
+      background: #ffd60a; color: #000; font-weight: 600; padding: 8px 20px;
+      border-radius: 20px; text-decoration: none; transition: 0.3s;
+      border: none; cursor: pointer; font-size: 0.95rem;
+    }
+    .login-btn:hover, .lang-btn:hover { background: #ffb703; }
+
+    /* language dropdown */
+    .lang-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; color: #222; border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12); overflow: hidden;
+      min-width: 180px; transform-origin: top right; opacity: 0;
+      pointer-events: none; transform: scale(0.95); transition: all 160ms ease;
+      z-index: 1000;
+    }
+    .lang-menu.open { opacity: 1; pointer-events: auto; transform: scale(1); }
+    .lang-menu button {
+      display: block; width: 100%; text-align: left; padding: 10px 14px;
+      border: none; background: transparent; cursor: pointer;
+      font-size: 0.95rem; font-family: inherit;
+    }
+    .lang-menu button:hover { background: #f5f5f8; }
+
+    /* hide default Google UI */
+    #google_translate_element { position: absolute; left: -9999px; top: 0; }
+
+    /* HERO */
+    .hero { display: flex; justify-content: space-between; align-items: center;
+      padding: 60px 8%; background: linear-gradient(120deg, #e0c3fc, #8ec5fc); flex-wrap: wrap; }
+    .hero-text { max-width: 600px; }
+    .hero-text h2 { font-size: 2.8rem; color: #222; margin-bottom: 15px; }
+    .hero-text h2 span { color: #5a189a; }
+    .hero-text p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; color: #444; }
+    .cta-btn { background: #5a189a; color: #fff; font-size: 1rem;
+      padding: 12px 28px; border: none; border-radius: 25px; cursor: pointer;
+      transition: transform 0.3s, background 0.3s; }
+    .cta-btn:hover { transform: scale(1.05); background: #3c096c; }
+    .hero-img img { width: 420px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+    /* INTRO */
+    .intro { text-align: center; padding: 80px 12%; background: #fff; animation: fadeIn 1.5s ease-in-out; }
+    .intro h2 { font-size: 2.5rem; color: #5a189a; margin-bottom: 20px; }
+    .intro p { font-size: 1.2rem; color: #333; line-height: 1.8; max-width: 900px; margin: 0 auto; }
+
+    /* FEATURES */
+    .features { padding: 80px 10%; text-align: center; background: #f8f9ff; }
+    .features h2 { font-size: 2.5rem; margin-bottom: 50px; color: #5a189a; animation: fadeIn 1.5s ease-in-out; }
+    .card-container { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; }
+    .card { flex: 1; min-width: 300px; max-width: 350px; background: #fff;
+      padding: 40px 25px; border-radius: 20px; box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease; animation: fadeUp 1.5s ease; }
+    .card:hover { transform: translateY(-10px); }
+    .card h3 { color: #5a189a; margin-bottom: 15px; font-size: 1.5rem; }
+    .card p { font-size: 1.1rem; color: #333; margin-bottom: 20px; line-height: 1.6; }
+    .card button { padding: 10px 25px; border: none; border-radius: 30px;
+      background: linear-gradient(45deg, #5a189a, #00b4d8); color: #fff; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+    .card button:hover { opacity: 0.85; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* FOOTER */
+    footer { background: #5a189a; color: #fff; padding: 20px; text-align: center; margin-top: 40px; }
+
+    /* small screens */
+    @media (max-width: 880px) {
+      .hero-img img { width: 100%; max-width: 320px; margin-top: 20px; }
+      header { padding: 14px 6%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- IMPORTANT: set cookie BEFORE google script loads -->
+  <script>
+    // robust setCookie helper (sets multiple cookie variants)
+    function setCookie(name, value, days) {
+      var expires = '';
+      if (days) {
+        var d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000));
+        expires = '; expires=' + d.toUTCString();
+      }
+      try { document.cookie = name + '=' + value + expires + '; path=/'; } catch(e){}
+      try { document.cookie = name + '=' + value + expires + '; path=/; domain=' + location.hostname; } catch(e){}
+      try { document.cookie = name + '=' + value + expires + '; path=/; domain=.' + location.hostname; } catch(e){}
+    }
+
+    // apply stored preferredLang (if any) before translate script loads
+    (function applySaved() {
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setCookie('googtrans', '/en/' + saved, 365);
+      } else {
+        setCookie('googtrans', '/en/en', 365);
+      }
+    })();
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>🌐 Pravaha</h1>
+    <nav>
+      <ul>
+         <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        
+      </ul>
+    </nav>
+
+    <div class="nav-controls" id="langControls">
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2>India’s First <span>AI-Powered</span><br/>Multilingual Localization Engine</h2>
+      <p>Translate and adapt skill training content into 22+ Indian languages. Break barriers with inclusive, culturally-aware, and scalable solutions.</p>
+      <button class="cta-btn">Get Started</button>
+    </div>
+    <div class="hero-img">
+      <img src="https://img.freepik.com/free-vector/hand-drawn-college-entrance-exam-illustration_23-2150359353.jpg" alt="Learning Illustration"/>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <h2>Welcome to Pravaha</h2>
+    <p>Pravaha is India’s first AI-powered multilingual localization engine designed to bridge the language divide. With support for 22+ Indian languages, it empowers learners, trainers, and institutions to make education truly inclusive.</p>
+  </section>
+    <!-- CAREER COUNSELLING -->
+  <section class="counselling" style="text-align:center; padding:80px 12%; background:#f8f9ff;">
+    <h2 style="font-size:2.5rem; color:#5a189a; margin-bottom:20px;">🎯 Personalized Career Counselling</h2>
+    <p style="font-size:1.2rem; color:#333; line-height:1.8; max-width:900px; margin:0 auto 25px;">
+      At Pravaha, we go beyond just delivering courses. Our AI-powered guidance system helps learners identify the right career path based on their skills, interests, and learning progress. With multilingual support, students receive tailored advice and growth opportunities in a language they understand best—making career planning more accessible, inclusive, and effective.
+    </p>
+    <button class="cta-btn" onclick="window.location.href='counselling.html'">Get Career Counselling</button>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>Why Choose Pravaha?</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>Join the Pravaha Family</h3>
+        <p>Be part of our growing community of learners and educators who believe in the power of inclusive education.</p>
+        <button>Get Started</button>
+      </div>
+      <div class="card">
+        <h3>Study Material in Multiple Languages</h3>
+        <p>Access vocational training resources seamlessly translated into 22+ Indian languages with cultural adaptation for better understanding.</p>
+        <button onclick="window.location.href='materials.html'">Explore</button>
+      </div>
+      <div class="card">
+        <h3>User Reviews</h3>
+        <p>“Pravaha helped me learn in my mother tongue. Now I understand concepts faster and feel confident!” – Asha, Bihar</p>
+        <button onclick="window.location.href='reviews.html'">Explore</button>
+      </div>
+    </div>
+  </section>
+    <!-- MOTIVATIONAL MEMES -->
+  <section class="memes" style="padding:80px 10%; background:#fff; text-align:center;">
+    <h2 style="font-size:2.5rem; color:#5a189a; margin-bottom:40px; animation:fadeIn 1.2s ease;">
+      💡 Motivation Corner
+    </h2>
+    <div class="meme-gallery">
+      <div class="meme">
+        <img src="https://framerusercontent.com/images/VnEUASyQyNsQjjoDS1hr7ahlj7k.png?width=400&height=400" alt="Stay motivated"/>
+      </div>
+      <div class="meme">
+        <img src="https://i.pinimg.com/originals/6c/9a/9e/6c9a9e7154694c261d66f04b2ed6717e.jpg" alt="Never give up"/>
+      </div>
+      <div class="meme">
+        <img src="https://www.developgoodhabits.com/wp-content/uploads/2023/02/success-meme.jpg" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://www.winkgo.com/wp-content/uploads/2020/01/motivational-memes-57-720x576.jpg" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://i.pinimg.com/736x/d7/a9/0b/d7a90b0cbcf391ce62a22c309c936e60.jpg" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://wallpapers.com/images/hd/educational-memes-1800-x-1675-wallpaper-chcbpkk6qxntdde6.jpg" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://www.splashlearn.com/blog/wp-content/uploads/2022/04/Grumpy-cat-back-to-school-memes-832x1024.jpg" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS17BjJI7bizj6bsLs09l8RGc_cQUDo8R2-fA&s" alt="Believe in yourself"/>
+      </div>
+      <div class="meme">
+        <img src="https://www.boredpanda.com/blog/wp-content/uploads/2023/07/funny-memes-memeseducational-8-64a2c219d713e__700.jpg?utm_campaign=rebelboost_true" alt="Believe in yourself"/>
+      </div>
+      
+      
+ 
+    </div>
+  </section>
+
+  <style>
+    .meme-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+
+  max-height: 520px;          /* height of scroll area */
+  overflow-y: auto;           /* vertical scrollbar */
+  overflow-x: hidden;
+
+  padding: 10px 10px 20pxs;
+}
+
+/* Scrollbar width */
+.meme-gallery::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar track */
+.meme-gallery::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb */
+.meme-gallery::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #5a189a, #00b4d8);
+  border-radius: 10px;
+}
+
+/* Firefox support */
+.meme-gallery {
+  scrollbar-width: thin;
+  scrollbar-color: #5a189a #f1f1f1;
+}
+
+    .meme {
+      flex: 1; min-width: 250px; max-width: 300px;
+      overflow: hidden; border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transform: scale(1); transition: transform .3s, box-shadow .3s;
+      animation: fadeUp 1.5s ease;
+    }
+    .meme img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .meme:hover {
+      transform: scale(1.05); box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    }
+  </style>
+
+  
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <!-- Hidden Google translate element -->
+  <div id="google_translate_element"></div>
+
+  <!-- LANGUAGE HANDLERS + Google Translate init -->
+  <script>
+    // re-use setCookie (defined earlier in top inline script)
+    // If it's not defined (edge case), define fallback:
+    if (typeof setCookie !== 'function') {
+      function setCookie(name, value, days) {
+        var expires = '';
+        if (days) { var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); expires='; expires='+d.toUTCString(); }
+        try { document.cookie = name+'='+value+expires+'; path=/'; } catch(e){}
+      }
+    }
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa,or,as,ur'
+      }, 'google_translate_element');
+
+      // after widget loads try to apply savedLang (widget may already reflect cookie)
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setTimeout(function(){ trySetCombo(saved); }, 600);
+      }
+    }
+
+    function trySetCombo(lang) {
+      var combo = document.querySelector('.goog-te-combo');
+      if (!combo) return;
+      try {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+      } catch (e) {}
+    }
+    // UI: language menu
+    (function attachLangUI(){
+      var langBtn = document.getElementById('langBtn');
+      var langMenu = document.getElementById('langMenu');
+
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        langMenu.classList.toggle('open');
+      });
+
+      langMenu.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-lang]');
+        if (!btn) return;
+        var lang = btn.getAttribute('data-lang');
+
+        // store preference, set cookie, then reload so Google picks it reliably
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans', '/en/' + lang, 365);
+        // small delay so cookie flushes, then reload
+        setTimeout(function(){ window.location.reload(); }, 250);
+      });
+
+      document.addEventListener('click', function(e){
+        if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+          langMenu.classList.remove('open');
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') langMenu.classList.remove('open');
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  
+<!--chatbot-->
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="oozOjLG52Sg0KbBeXJ9As";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+  
+  <!--chatbot-->
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Counselling – Pravaha</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+    body { background:#f9fafc; color:#333; overflow-x:hidden; }
+
+    /* NAVBAR */
+    header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 8%; background:linear-gradient(90deg,#5a189a,#00b4d8);
+      color:#fff; position:sticky; top:0; z-index:999;
+    }
+    header h1 { font-size:1.6rem; font-weight:700; animation: fadeIn 1.5s ease; }
+    nav ul { display:flex; list-style:none; gap:25px; }
+    nav ul li a { text-decoration:none; color:#fff; font-weight:500; transition:color .3s; }
+    nav ul li a:hover { color:#ffd60a; }
+    .nav-controls { display:flex; align-items:center; gap:15px; position:relative; }
+    .login-btn,.lang-btn {
+      background:#ffd60a; color:#000; font-weight:600; padding:8px 20px;
+      border-radius:20px; text-decoration:none; border:none; cursor:pointer;
+      transition:.3s; font-size:0.95rem;
+    }
+    .login-btn:hover,.lang-btn:hover { background:#ffb703; transform:scale(1.05); }
+    .lang-menu { position:absolute; right:0; top:calc(100% + 8px); background:#fff; 
+      border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.12); overflow:hidden;
+      min-width:180px; opacity:0; pointer-events:none; transform:scale(0.95);
+      transition:all 160ms ease; z-index:1000;
+    }
+    .lang-menu.open { opacity:1; pointer-events:auto; transform:scale(1); }
+    .lang-menu button { width:100%; text-align:left; padding:10px 14px; border:none;
+      background:transparent; cursor:pointer; font-size:0.95rem; font-family:inherit;
+    }
+    .lang-menu button:hover { background:#f5f5f8; }
+    #google_translate_element { position:absolute; left:-9999px; }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* PAGE CONTENT */
+    .counselling { padding:80px 12%; text-align:center; background:#fff; }
+    .counselling h2 { font-size:2.5rem; color:#5a189a; margin-bottom:20px; }
+    .typing { 
+      display:inline-block; border-right:3px solid #5a189a; 
+      white-space:nowrap; overflow:hidden; 
+      animation: typing 4s steps(30,end), blink 1s step-end infinite;
+      font-size:1.5rem; color:#00b4d8; margin-bottom:20px;
+    }
+    .counselling p { font-size:1.2rem; line-height:1.8; color:#333; margin-bottom:40px; animation: fadeIn 2s ease; }
+
+    form {
+      max-width:700px; margin:0 auto; background:#f8f9ff; padding:40px;
+      border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.1); text-align:left;
+      animation: slideUp 1.5s ease;
+    }
+    form label { display:block; margin-bottom:8px; font-weight:600; color:#5a189a; }
+    form input, form textarea, form select {
+      width:100%; padding:12px 15px; margin-bottom:20px; border:1px solid #ddd;
+      border-radius:10px; font-size:1rem; outline:none; transition:.3s;
+    }
+    form input:focus, form textarea:focus, form select:focus {
+      border-color:#5a189a; box-shadow:0 0 8px rgba(90,24,154,0.3);
+    }
+    .submit-btn {
+      display:block; width:100%; background:linear-gradient(45deg,#5a189a,#00b4d8);
+      color:#fff; border:none; border-radius:30px; padding:14px; font-size:1.1rem;
+      cursor:pointer; transition:.3s;
+    }
+    .submit-btn:hover { opacity:0.9; transform:scale(1.05); }
+
+    /* MOTIVATIONAL MEMES */
+    .memes { margin-top:60px; }
+    .memes h3 { font-size:2rem; color:#5a189a; margin-bottom:25px; }
+    .meme-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+    }
+    .meme-grid img {
+      width:100%; border-radius:15px; box-shadow:0 6px 15px rgba(0,0,0,0.15);
+      transition:.3s; cursor:pointer;
+    }
+    .meme-grid img:hover { transform:scale(1.05) rotate(-1deg); }
+
+    /* FOOTER */
+    footer { background:#5a189a; color:#fff; padding:20px; text-align:center; margin-top:40px; }
+  </style>
+</head>
+<body>
+
+  <!-- Save Preferred Language Cookie -->
+  <script>
+    function setCookie(name,value,days){var e='';if(days){var d=new Date();d.setTime(d.getTime()+(days*24*60*60*1000));e='; expires='+d.toUTCString();}document.cookie=name+'='+value+e+'; path=/';}
+    (function(){var saved=localStorage.getItem('preferredLang');if(saved&&saved!=='en'){setCookie('googtrans','/en/'+saved,365);}else{setCookie('googtrans','/en/en',365);}})();
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>🌐 Pravaha</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-controls">
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN SECTION -->
+  <section class="counselling">
+    <h2 class="typing">🎯 Unlock Your Potential with Career Counselling</h2>
+    <p>Fill out this form to receive tailored guidance on which vocational or skill-based course suits you best.</p>
+
+    <form onsubmit="event.preventDefault(); alert('✅ Thank you! Our counsellors will reach out soon.');">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+
+      <label for="interest">Your Interests</label>
+      <select id="interest" required>
+        <option value="">-- Select an area --</option>
+        <option value="tech">Technology & Coding</option>
+        <option value="fashion">Fashion & Designing</option>
+        <option value="cooking">Cooking & Culinary Arts</option>
+        <option value="plumbing">Plumbing / Electrical</option>
+        <option value="business">Business & Entrepreneurship</option>
+      </select>
+
+      <label for="goals">Your Career Goals</label>
+      <textarea id="goals" rows="4" placeholder="Describe your goals..." required></textarea>
+
+      <button type="submit" class="submit-btn">🚀 Submit</button>
+    </form>
+
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <!-- Google Translate + Language Script -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages:'en,hi,bn,te,ta,ml,kn,mr,gu,pa' }, 'google_translate_element');
+      var saved = localStorage.getItem('preferredLang'); if(saved && saved!=='en'){ setTimeout(()=>trySetCombo(saved),600); }
+    }
+    function trySetCombo(lang){ var combo=document.querySelector('.goog-te-combo'); if(combo){ combo.value=lang; combo.dispatchEvent(new Event('change')); } }
+    (function attachLangUI(){
+      var langBtn=document.getElementById('langBtn'); var langMenu=document.getElementById('langMenu');
+      langBtn.addEventListener('click',e=>{e.stopPropagation();langMenu.classList.toggle('open');});
+      langMenu.addEventListener('click',e=>{var btn=e.target.closest('button[data-lang]');if(!btn)return;var lang=btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang',lang); setCookie('googtrans','/en/'+lang,365); setTimeout(()=>window.location.reload(),250);});
+      document.addEventListener('click',e=>{if(!langBtn.contains(e.target)&&!langMenu.contains(e.target)) langMenu.classList.remove('open');});
+    })();
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

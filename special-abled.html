@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Specially Abled Learners – Pravaha</title>
+
+<!-- =================== ORIGINAL STYLE (UNCHANGED) =================== -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+body{background:#f9fafc;color:#333}
+
+/* NAVBAR */
+header{
+display:flex;justify-content:space-between;align-items:center;
+padding:18px 8%;
+background:linear-gradient(90deg,#5a189a,#00b4d8);
+color:#fff;position:sticky;top:0;z-index:999;
+}
+header h1{font-size:1.6rem;font-weight:700}
+nav ul{display:flex;list-style:none;gap:25px}
+nav ul li a{text-decoration:none;color:#fff;font-weight:500}
+nav ul li a:hover{color:#ffd60a}
+
+.nav-controls{display:flex;align-items:center;gap:15px;position:relative}
+.login-btn,.lang-btn{
+background:#ffd60a;color:#000;font-weight:600;
+padding:8px 20px;border-radius:20px;
+border:none;cursor:pointer
+}
+
+/* LANGUAGE MENU */
+.lang-menu{
+position:absolute;right:0;top:calc(100% + 8px);
+background:#fff;color:#222;border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,.12);
+opacity:0;pointer-events:none;
+transform:scale(.95);transition:.2s;
+min-width:180px;z-index:1000
+}
+.lang-menu.open{opacity:1;pointer-events:auto;transform:scale(1)}
+.lang-menu button{
+display:block;width:100%;padding:10px 14px;
+border:none;background:none;text-align:left;
+cursor:pointer;font-size:.95rem
+}
+.lang-menu button:hover{background:#f5f5f8}
+
+/* CONTENT */
+.hero{padding:70px 10%;background:linear-gradient(120deg,#e0c3fc,#8ec5fc);text-align:center}
+.hero h2{font-size:2.6rem}
+.hero p{font-size:1.2rem;margin-top:10px}
+
+.section{padding:70px 10%;text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:40px}
+.card{background:#fff;padding:30px;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.1)}
+.card:hover{transform:translateY(-8px)}
+
+footer{background:#5a189a;color:#fff;text-align:center;padding:20px;margin-top:40px}
+
+#google_translate_element{display:none}
+</style>
+
+<!-- =================== LANGUAGE COOKIE (EXACT INDEX LOGIC) =================== -->
+<script>
+function setCookie(name,value,days){
+  var expires='';
+  if(days){
+    var d=new Date();
+    d.setTime(d.getTime()+days*24*60*60*1000);
+    expires='; expires='+d.toUTCString();
+  }
+  try{document.cookie=name+'='+value+expires+'; path=/';}catch(e){}
+  try{document.cookie=name+'='+value+expires+'; path=/; domain='+location.hostname;}catch(e){}
+  try{document.cookie=name+'='+value+expires+'; path=/; domain=.'+location.hostname;}catch(e){}
+}
+(function(){
+  var saved=localStorage.getItem('preferredLang');
+  setCookie('googtrans', saved?'/en/'+saved:'/en/en', 365);
+})();
+</script>
+</head>
+
+<body>
+
+<header>
+<h1>🌐 Pravaha</h1>
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="courses.html">Courses</a></li>
+<li><a href="features.html">Features</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+
+<div class="nav-controls" id="langControls">
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+</header>
+
+<section class="hero">
+<h2>Inclusive Learning for Everyone</h2>
+<p>Real-time captions, sign language support & multilingual accessibility</p>
+</section>
+
+<section class="section">
+<h2>Accessibility Features</h2>
+<div class="cards">
+<a href="speech-to-text.html" style="text-decoration:none;color:inherit">
+  <div class="card">
+    <h3>🎤 Speech → Text</h3>
+    <p>Live captions for deaf & hard-of-hearing learners</p>
+  </div>
+</a>
+
+<a href="Text-Sign-Language.html" style="text-decoration:none;color:inherit">
+  <div class="card">
+    <h3>🎥 Video → Text & Sign Language</h3>
+    <p>Convert video speech into text and sign language in real time</p>
+  </div>
+</a>
+
+<div class="card">
+<h3>🌐 Multilingual Support</h3>
+<p>Works with all Indian languages using AI translation</p>
+</div>
+</div>
+</section>
+
+
+<footer>
+<p>© 2026 Pravaha – Education for All</p>
+</footer>
+
+ <!-- Hidden Google translate element -->
+  <div id="google_translate_element"></div>
+
+  <!-- LANGUAGE HANDLERS + Google Translate init -->
+  <script>
+    // re-use setCookie (defined earlier in top inline script)
+    // If it's not defined (edge case), define fallback:
+    if (typeof setCookie !== 'function') {
+      function setCookie(name, value, days) {
+        var expires = '';
+        if (days) { var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); expires='; expires='+d.toUTCString(); }
+        try { document.cookie = name+'='+value+expires+'; path=/'; } catch(e){}
+      }
+    }
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa,or,as,ur'
+      }, 'google_translate_element');
+
+      // after widget loads try to apply savedLang (widget may already reflect cookie)
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setTimeout(function(){ trySetCombo(saved); }, 600);
+      }
+    }
+
+    function trySetCombo(lang) {
+      var combo = document.querySelector('.goog-te-combo');
+      if (!combo) return;
+      try {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+      } catch (e) {}
+    }
+    // UI: language menu
+    (function attachLangUI(){
+      var langBtn = document.getElementById('langBtn');
+      var langMenu = document.getElementById('langMenu');
+
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        langMenu.classList.toggle('open');
+      });
+
+      langMenu.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-lang]');
+        if (!btn) return;
+        var lang = btn.getAttribute('data-lang');
+
+        // store preference, set cookie, then reload so Google picks it reliably
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans', '/en/' + lang, 365);
+        // small delay so cookie flushes, then reload
+        setTimeout(function(){ window.location.reload(); }, 250);
+      });
+
+      document.addEventListener('click', function(e){
+        if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+          langMenu.classList.remove('open');
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') langMenu.classList.remove('open');
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

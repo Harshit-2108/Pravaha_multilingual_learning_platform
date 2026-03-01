@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pravaha – User Reviews</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: #f9fafc; color: #333; }
+
+    /* NAVBAR */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 8%; background: linear-gradient(90deg, #5a189a, #00b4d8);
+      color: #fff; position: sticky; top: 0; z-index: 999;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; }
+    nav ul { display: flex; list-style: none; gap: 25px; }
+    nav ul li a { text-decoration: none; color: #fff; font-weight: 500; }
+    nav ul li a:hover { color: #ffd60a; }
+    .nav-controls { display: flex; align-items: center; gap: 15px; position: relative; }
+    .login-btn, .lang-btn {
+      background: #ffd60a; color: #000; font-weight: 600; padding: 8px 20px;
+      border-radius: 20px; text-decoration: none; border: none; cursor: pointer;
+    }
+    .login-btn:hover, .lang-btn:hover { background: #ffb703; }
+
+    .lang-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; color: #222; border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      min-width: 180px; opacity: 0; pointer-events: none;
+      transform: scale(0.95); transition: all 160ms ease;
+      z-index: 1000;
+    }
+    .lang-menu.open { opacity: 1; pointer-events: auto; transform: scale(1); }
+    .lang-menu button { width: 100%; text-align: left; padding: 10px 14px; border: none; background: transparent; cursor: pointer; }
+    .lang-menu button:hover { background: #f5f5f8; }
+    #google_translate_element { position: absolute; left: -9999px; }
+
+    /* REVIEWS SECTION */
+    .reviews {
+      padding: 70px 12%;
+      background: #fff;
+    }
+    .reviews h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #5a189a;
+      margin-bottom: 40px;
+    }
+    .review-card {
+      background: #f8f9ff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+    .review-card h3 {
+      color: #5a189a;
+      margin-bottom: 10px;
+    }
+    .review-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #5a189a; color: #fff;
+      padding: 20px; text-align: center; margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- apply saved language before translate -->
+  <script>
+    function setCookie(name, value, days) {
+      var expires = '';
+      if (days) { var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); expires='; expires='+d.toUTCString(); }
+      document.cookie = name+'='+value+expires+'; path=/';
+    }
+    (function(){
+      var saved = localStorage.getItem('preferredLang');
+      if(saved && saved!=='en'){ setCookie('googtrans','/en/'+saved,365); }
+      else{ setCookie('googtrans','/en/en',365); }
+    })();
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>🌐 Pravaha</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-controls">
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- REVIEWS SECTION -->
+  <section class="reviews">
+    <h2>What Our Users Say</h2>
+
+    <div class="review-card">
+      <h3>Asha – Bihar</h3>
+      <p>“Pravaha helped me learn in my mother tongue. Now I understand concepts faster and feel confident!”</p>
+    </div>
+
+    <div class="review-card">
+      <h3>Ravi – Andhra Pradesh</h3>
+      <p>“The Telugu translations are so accurate. For the first time, I could study without language being a barrier.”</p>
+    </div>
+
+    <div class="review-card">
+      <h3>Meera – Kerala</h3>
+      <p>“Pravaha’s Malayalam course notes are clear and simple. It feels like the content was written just for me.”</p>
+    </div>
+
+    <div class="review-card">
+      <h3>Arjun – Maharashtra</h3>
+      <p>“Thanks to Pravaha, I prepared for my exams in Marathi. Truly a revolutionary platform!”</p>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa'
+      }, 'google_translate_element');
+      var saved = localStorage.getItem('preferredLang');
+      if(saved && saved!=='en'){ setTimeout(()=>trySetCombo(saved),600); }
+    }
+    function trySetCombo(lang){
+      var combo=document.querySelector('.goog-te-combo');
+      if(combo){ combo.value=lang; combo.dispatchEvent(new Event('change')); }
+    }
+
+    // handle language menu clicks
+    (function(){
+      var langBtn=document.getElementById('langBtn');
+      var langMenu=document.getElementById('langMenu');
+      langBtn.addEventListener('click', e=>{
+        e.stopPropagation(); langMenu.classList.toggle('open');
+      });
+      langMenu.addEventListener('click', e=>{
+        var btn=e.target.closest('button[data-lang]');
+        if(!btn) return;
+        var lang=btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans','/en/'+lang,365);
+        setTimeout(()=>window.location.reload(),250);
+      });
+      document.addEventListener('click', e=>{
+        if(!langBtn.contains(e.target)&&!langMenu.contains(e.target)){
+          langMenu.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

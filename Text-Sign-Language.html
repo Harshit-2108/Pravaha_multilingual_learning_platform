@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Video to Text & Sign Language – Pravaha</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Poppins",sans-serif}
+body{background:#f9fafc;color:#333}
+
+/* ================= NAVBAR (EXACT COPY) ================= */
+header{
+display:flex;justify-content:space-between;align-items:center;
+padding:18px 8%;
+background:linear-gradient(90deg,#5a189a,#00b4d8);
+color:#fff;position:sticky;top:0;z-index:999;
+}
+header h1{font-size:1.6rem;font-weight:700;letter-spacing:1px}
+nav ul{display:flex;list-style:none;gap:25px}
+nav ul li a{text-decoration:none;color:#fff;font-weight:500}
+nav ul li a:hover{color:#ffd60a}
+
+.nav-controls{display:flex;align-items:center;gap:15px;position:relative}
+.login-btn,.lang-btn{
+background:#ffd60a;color:#000;font-weight:600;
+padding:8px 20px;border-radius:20px;
+border:none;cursor:pointer;font-size:.95rem
+}
+.login-btn:hover,.lang-btn:hover{background:#ffb703}
+
+/* LANGUAGE MENU */
+.lang-menu{
+position:absolute;right:0;top:calc(100% + 8px);
+background:#fff;color:#222;border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,.12);
+overflow:hidden;min-width:180px;
+opacity:0;pointer-events:none;
+transform:scale(.95);transition:all 160ms ease;
+z-index:1000
+}
+.lang-menu.open{opacity:1;pointer-events:auto;transform:scale(1)}
+.lang-menu button{
+display:block;width:100%;padding:10px 14px;
+border:none;background:none;text-align:left;
+cursor:pointer;font-size:.95rem
+}
+.lang-menu button:hover{background:#f5f5f8}
+
+/* HIDE GOOGLE UI */
+#google_translate_element{position:absolute;left:-9999px}
+
+/* ================= HERO ================= */
+.hero{
+padding:70px 10%;
+background:linear-gradient(120deg,#e0c3fc,#8ec5fc);
+text-align:center
+}
+.hero h2{font-size:2.6rem}
+.hero p{font-size:1.2rem;margin-top:10px}
+
+/* ================= CONTENT ================= */
+.section{padding:70px 10%}
+.box{
+max-width:900px;margin:auto;
+background:#fff;padding:40px;
+border-radius:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.1)
+}
+
+video{
+width:100%;margin-top:15px;border-radius:15px
+}
+
+textarea{
+width:100%;min-height:100px;
+margin-top:15px;padding:15px;
+border-radius:12px;border:1px solid #ccc;
+font-size:1rem;resize:none
+}
+
+.sign-box{
+display:flex;gap:15px;flex-wrap:wrap;
+margin-top:20px
+}
+.sign-box img{
+width:120px;height:120px;
+border-radius:12px;
+box-shadow:0 5px 12px rgba(0,0,0,.15)
+}
+
+button.action{
+margin-top:20px;
+padding:12px 25px;
+border:none;border-radius:25px;
+background:#5a189a;color:#fff;
+font-size:1rem;cursor:pointer
+}
+button.action:hover{background:#3c096c}
+
+/* FOOTER */
+footer{
+background:#5a189a;color:#fff;
+text-align:center;padding:20px;margin-top:40px
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LANGUAGE COOKIE (EXACT LOGIC) ================= -->
+<script>
+function setCookie(name,value,days){
+  var expires='';
+  if(days){
+    var d=new Date();
+    d.setTime(d.getTime()+days*24*60*60*1000);
+    expires='; expires='+d.toUTCString();
+  }
+  try{document.cookie=name+'='+value+expires+'; path=/';}catch(e){}
+  try{document.cookie=name+'='+value+expires+'; path=/; domain='+location.hostname;}catch(e){}
+  try{document.cookie=name+'='+value+expires+'; path=/; domain=.'+location.hostname;}catch(e){}
+}
+(function(){
+  var saved=localStorage.getItem('preferredLang');
+  setCookie('googtrans', saved?'/en/'+saved:'/en/en', 365);
+})();
+</script>
+
+<header>
+<h1>🌐 Pravaha</h1>
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="courses.html">Courses</a></li>
+<li><a href="features.html">Features</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+
+<div class="nav-controls">
+<a href="login.html" class="login-btn">Login/Register</a>
+<button class="lang-btn" id="langBtn">🌐 Language</button>
+<div class="lang-menu" id="langMenu">
+<button data-lang="en">English</button>
+<button data-lang="hi">Hindi (हिन्दी)</button>
+<button data-lang="bn">Bengali (বাংলা)</button>
+<button data-lang="te">Telugu (తెలుగు)</button>
+<button data-lang="ta">Tamil (தமிழ்)</button>
+<button data-lang="ml">Malayalam (മലയാളം)</button>
+<button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+<button data-lang="mr">Marathi (मराठी)</button>
+<button data-lang="gu">Gujarati (ગુજરાતી)</button>
+<button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+</div>
+</div>
+</header>
+
+<section class="hero">
+<h2>🎥 Video to Text & Sign Language</h2>
+<p>Real-time speech extraction with accessibility support</p>
+</section>
+
+<section class="section">
+<div class="box">
+
+<input type="file" accept="video/*" onchange="loadVideo(event)">
+<video id="video" controls></video>
+
+<h3>Recognized Speech</h3>
+<textarea id="textOutput" placeholder="Speech will appear here..."></textarea>
+
+<h3>Sign Language Output</h3>
+<div class="sign-box" id="signBox"></div>
+
+<button class="action" onclick="startRecognition()">▶ Start Recognition</button>
+
+</div>
+</section>
+
+<footer>
+<p>© 2026 Pravaha | AI Multilingual Localization Engine</p>
+</footer>
+
+<div id="google_translate_element"></div>
+
+<!-- ================= VIDEO → TEXT → SIGN LOGIC ================= -->
+<script>
+const signMap={
+"hello":"https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
+"education":"https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
+"technology":"https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif",
+"india":"https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif"
+};
+
+function loadVideo(e){
+document.getElementById('video').src=URL.createObjectURL(e.target.files[0]);
+}
+
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+const recognition=new SpeechRecognition();
+recognition.lang="en-US";
+
+function startRecognition(){recognition.start();}
+
+recognition.onresult=e=>{
+const text=e.results[0][0].transcript.toLowerCase();
+document.getElementById('textOutput').value=text;
+
+const box=document.getElementById('signBox');
+box.innerHTML='';
+text.split(' ').forEach(w=>{
+if(signMap[w]){
+const img=document.createElement('img');
+img.src=signMap[w];
+box.appendChild(img);
+}
+});
+};
+</script>
+
+<!-- ================= GOOGLE TRANSLATE (EXACT) ================= -->
+<script>
+function googleTranslateElementInit(){
+new google.translate.TranslateElement({
+pageLanguage:'en',
+includedLanguages:'en,hi,bn,te,ta,ml,kn,mr,gu,pa,or,as,ur'
+},'google_translate_element');
+
+var saved=localStorage.getItem('preferredLang');
+if(saved&&saved!=='en'){
+setTimeout(()=>{ 
+var combo=document.querySelector('.goog-te-combo');
+if(combo){combo.value=saved;combo.dispatchEvent(new Event('change'));} 
+},600);
+}
+}
+
+(function(){
+const btn=document.getElementById('langBtn');
+const menu=document.getElementById('langMenu');
+
+btn.onclick=e=>{e.stopPropagation();menu.classList.toggle('open');};
+
+menu.onclick=e=>{
+const b=e.target.closest('button[data-lang]');
+if(!b)return;
+const lang=b.dataset.lang;
+localStorage.setItem('preferredLang',lang);
+setCookie('googtrans','/en/'+lang,365);
+setTimeout(()=>location.reload(),250);
+};
+
+document.onclick=()=>menu.classList.remove('open');
+})();
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

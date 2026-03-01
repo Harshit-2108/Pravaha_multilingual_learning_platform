@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses - Pravaha</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+    body { background:#f9fafc; color:#333; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:18px 8%; background:linear-gradient(90deg,#5a189a,#00b4d8); color:#fff; position:sticky; top:0; z-index:999; }
+    header h1 { font-size:1.6rem; font-weight:700; }
+    nav ul { display:flex; list-style:none; gap:25px; }
+    nav ul li a { text-decoration:none; color:#fff; font-weight:500; }
+    nav ul li a:hover { color:#ffd60a; }
+    .login-btn, .lang-btn { padding:8px 20px; border-radius:20px; text-decoration:none; font-weight:600; cursor:pointer; border:none; }
+    .login-btn { background:#ffd60a; color:#000; }
+    .login-btn:hover { background:#ffb703; }
+    .lang-btn { background:#333; color:#fff; margin-left:10px; }
+    .lang-menu { display:none; position:absolute; right:8%; top:70px; background:#fff; border-radius:10px; box-shadow:0 6px 12px rgba(0,0,0,0.2); overflow:hidden; }
+    .lang-menu.open { display:block; }
+    .lang-menu button { display:block; padding:10px 20px; width:100%; border:none; background:none; text-align:left; cursor:pointer; }
+    .lang-menu button:hover { background:#f1f1f1; }
+    .container { padding:60px 8%; }
+    .container h2 { font-size:2.5rem; color:#5a189a; text-align:center; margin-bottom:40px; }
+    .course-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:30px; }
+    .course-card { background:#fff; padding:20px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); text-align:center; transition:transform .3s ease; }
+    .course-card:hover { transform:translateY(-8px); }
+    .course-card h3 { color:#5a189a; margin-bottom:10px; }
+    .course-card p { color:#444; font-size:1rem; margin-bottom:15px; }
+    .course-card iframe { width:100%; height:200px; border-radius:10px; border:none; }
+    footer { background:#5a189a; color:#fff; padding:20px; text-align:center; margin-top:40px; }
+    #google_translate_element { display:none; }
+    .watch-btn{
+  padding:10px 24px;
+  border:none;
+  border-radius:25px;
+  background:linear-gradient(45deg,#5a189a,#00b4d8);
+  color:#fff;
+  font-size:0.95rem;
+  cursor:pointer;
+  transition:transform .3s, opacity .3s;
+}
+.watch-btn:hover{
+  transform:scale(1.05);
+  opacity:.9;
+}
+.search-container{
+  max-width:600px;
+  margin:0 auto 40px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.search-container input{
+  flex:1;
+  padding:12px 16px;
+  border-radius:25px;
+  border:2px solid #ddd;
+  font-size:1rem;
+  outline:none;
+}
+
+.search-container input:focus{
+  border-color:#5a189a;
+}
+
+#micBtn{
+  padding:10px 16px;
+  border-radius:50%;
+  border:none;
+  font-size:1.2rem;
+  cursor:pointer;
+  background:linear-gradient(45deg,#5a189a,#00b4d8);
+  color:#fff;
+  transition:transform .3s;
+}
+
+#micBtn:hover{
+  transform:scale(1.1);
+}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- IMPORTANT: set cookie BEFORE google script loads -->
+  <script>
+    function setCookie(name, value, days) {
+      var expires = '';
+      if (days) { var d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000)); expires = '; expires=' + d.toUTCString(); }
+      try { document.cookie = name + '=' + value + expires + '; path=/'; } catch(e){}
+      try { document.cookie = name + '=' + value + expires + '; path=/; domain=' + location.hostname; } catch(e){}
+      try { document.cookie = name + '=' + value + expires + '; path=/; domain=.' + location.hostname; } catch(e){}
+    }
+    (function applySaved() {
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setCookie('googtrans', '/en/' + saved, 365);
+      } else {
+        setCookie('googtrans', '/en/en', 365);
+      }
+    })();
+  </script>
+
+  <header>
+    <h1>Pravaha</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div>
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+  <h2>Our Courses</h2>
+
+  <div class="search-container">
+  <input 
+    type="text" 
+    id="courseSearch" 
+    placeholder="Search courses (type or speak)..."
+    onkeyup="filterCourses()"
+  />
+  <button id="micBtn" title="Speak">
+    🎤
+  </button>
+</div>
+
+
+  <div class="course-grid">
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>Fashion Designing</h3>
+        <p><strong>Language:</strong> Hindi</p>
+        <p>Learn to create stunning designs and build a career in fashion.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=zF-yDo4ybGA'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>Python Programming</h3>
+        <p><strong>Language:</strong> English</p>
+        <p>Master programming skills in multiple languages with real projects.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=Z1Yd7upQsXY'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>Plumbing</h3>
+        <p><strong>Language:</strong> Telugu</p>
+        <p>Get hands-on training in plumbing for professional growth.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=1AEQCSDhVjE'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>Basic Electrical & Electronics</h3>
+        <p><strong>Language:</strong> Kannada</p>
+        <p>Understand electrical systems and become industry-ready.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=_0SEbrZnVhM'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>Frontend Development</h3>
+        <p><strong>Language:</strong> Assamese</p>
+        <p>Learn frontend development skills and master website designing.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=XWNv21QADNQ'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+     <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>YouTube Content Creation</h3>
+        <p><strong>Language:</strong> Bengali</p>
+        <p>Learn frontend development skills and master website designing.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube-nocookie.com/embed/pUEGnCD7mFQ?si=EX_DKubkva06p8pm&amp;start=3'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+  <div>
+    <h3>Mobile Phone Repairing</h3>
+    <p><strong>Language:</strong> Hindi</p>
+    <p>Learn how to diagnose and repair common smartphone hardware and software issues.</p>
+  </div>
+  <button class="watch-btn"
+    onclick="window.location.href='https://www.youtube-nocookie.com/embed/1f5m3l8d0pU'">
+    ▶ Watch Video
+  </button>
+</div>
+
+
+<div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+  <div>
+    <h3>Spoken English for Jobs</h3>
+    <p><strong>Language:</strong> Tamil</p>
+    <p>Improve communication skills and gain confidence for interviews and workplaces.</p>
+  </div>
+  <button class="watch-btn"
+    onclick="window.location.href='https://www.youtube-nocookie.com/embed/3y9yFf2pY0s'">
+    ▶ Watch Video
+  </button>
+</div>
+
+
+<div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+  <div>
+    <h3>Digital Marketing Fundamentals</h3>
+    <p><strong>Language:</strong> Telugu</p>
+    <p>Learn social media marketing, SEO basics, and online promotion strategies.</p>
+  </div>
+  <button class="watch-btn"
+    onclick="window.location.href='https://www.youtube-nocookie.com/embed/R9qv4mK7JkU'">
+    ▶ Watch Video
+  </button>
+</div>
+
+
+
+<div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+  <div>
+    <h3>AI Tools for Daily Work</h3>
+    <p><strong>Language:</strong> English</p>
+    <p>Use AI tools like ChatGPT and Canva to improve productivity and efficiency.</p>
+  </div>
+  <button class="watch-btn"
+    onclick="window.location.href='https://www.youtube-nocookie.com/embed/2bYB1XKz0x8'">
+    ▶ Watch Video
+  </button>
+</div>
+
+
+
+<div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+  <div>
+    <h3>Financial Literacy & UPI Payments</h3>
+    <p><strong>Language:</strong> Gujarati</p>
+    <p>Understand banking basics, UPI payments, and personal finance management.</p>
+  </div>
+  <button class="watch-btn"
+    onclick="window.location.href='https://www.youtube-nocookie.com/embed/mJZqv4N0t0M'">
+    ▶ Watch Video
+  </button>
+</div>
+
+
+
+
+
+
+    <div class="course-card" style="display:flex;justify-content:space-between;align-items:center;gap:20px;">
+      <div>
+        <h3>More Coming Soon</h3>
+        <p><strong>Language:</strong> Multiple</p>
+        <p>We are constantly adding new skill development courses.</p>
+      </div>
+      <button class="watch-btn"
+        onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'">
+        ▶ Watch Video
+      </button>
+    </div>
+
+  </div>
+</main>
+
+
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <script>
+    // reuse setCookie if missing
+    if (typeof setCookie !== 'function') {
+      function setCookie(name, value, days) {
+        var expires = '';
+        if (days) { var d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000)); expires = '; expires=' + d.toUTCString(); }
+        try { document.cookie = name + '=' + value + expires + '; path=/'; } catch(e){}
+      }
+    }
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa'
+      }, 'google_translate_element');
+
+      var saved = localStorage.getItem('preferredLang');
+      if (saved && saved !== 'en') {
+        setTimeout(function(){ trySetCombo(saved); }, 600);
+      }
+    }
+
+    function trySetCombo(lang) {
+      var combo = document.querySelector('.goog-te-combo');
+      if (!combo) return;
+      try { combo.value = lang; combo.dispatchEvent(new Event('change')); } catch(e){}
+    }
+
+    (function attachLangUI(){
+      var langBtn = document.getElementById('langBtn');
+      var langMenu = document.getElementById('langMenu');
+
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        langMenu.classList.toggle('open');
+      });
+
+      langMenu.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-lang]');
+        if (!btn) return;
+        var lang = btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans', '/en/' + lang, 365);
+        setTimeout(function(){ window.location.reload(); }, 250);
+      });
+
+      document.addEventListener('click', function(e){
+        if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+          langMenu.classList.remove('open');
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') langMenu.classList.remove('open');
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+  <script>
+/* ---------- COURSE FILTER (FIXED) ---------- */
+function filterCourses() {
+  const query = document
+    .getElementById("courseSearch")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const courses = document.querySelectorAll(".course-card");
+
+  courses.forEach(card => {
+    const text = card.textContent.toLowerCase();
+
+    if (text.includes(query)) {
+      card.style.display = "";     // restores original layout
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+/* ---------- SPEECH TO TEXT ---------- */
+const micBtn = document.getElementById("micBtn");
+const searchInput = document.getElementById("courseSearch");
+
+if ("webkitSpeechRecognition" in window) {
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  micBtn.onclick = () => {
+    recognition.start();
+    micBtn.innerText = "🎙️";
+  };
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    searchInput.value = transcript;
+    filterCourses();
+  };
+
+  recognition.onend = () => {
+    micBtn.innerText = "🎤";
+  };
+} else {
+  micBtn.disabled = true;
+  micBtn.title = "Speech not supported";
+}
+</script>
+
+</body>
+</html>

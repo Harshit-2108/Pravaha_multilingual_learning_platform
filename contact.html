@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pravaha – Contact Us</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+    body { background: #f9fafc; color: #333; }
+
+    /* NAVBAR */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 8%; background: linear-gradient(90deg, #5a189a, #00b4d8);
+      color: #fff; position: sticky; top: 0; z-index: 999;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; }
+    nav ul { display: flex; list-style: none; gap: 25px; }
+    nav ul li a { text-decoration: none; color: #fff; font-weight: 500; }
+    nav ul li a:hover { color: #ffd60a; }
+    .nav-controls { display: flex; align-items: center; gap: 15px; position: relative; }
+    .login-btn, .lang-btn {
+      background: #ffd60a; color: #000; font-weight: 600; padding: 8px 20px;
+      border-radius: 20px; text-decoration: none; border: none; cursor: pointer;
+    }
+    .login-btn:hover, .lang-btn:hover { background: #ffb703; }
+
+    .lang-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; color: #222; border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      min-width: 180px; opacity: 0; pointer-events: none;
+      transform: scale(0.95); transition: all 160ms ease;
+      z-index: 1000;
+    }
+    .lang-menu.open { opacity: 1; pointer-events: auto; transform: scale(1); }
+    .lang-menu button { width: 100%; text-align: left; padding: 10px 14px; border: none; background: transparent; cursor: pointer; }
+    .lang-menu button:hover { background: #f5f5f8; }
+    #google_translate_element { position: absolute; left: -9999px; }
+
+    /* CONTACT SECTION */
+    .contact {
+      padding: 80px 12%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      background: #fff;
+    }
+    .contact h2 {
+      grid-column: span 2;
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #5a189a;
+    }
+    .contact-info {
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .contact-info div {
+      background: #f8f9ff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .contact-info h3 { color: #5a189a; margin-bottom: 8px; }
+    .contact-info p { color: #444; }
+
+    .contact-form {
+      background: #f8f9ff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .contact-form label { display: block; margin: 12px 0 6px; font-weight: 600; color: #333; }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 12px; border: 1px solid #ddd;
+      border-radius: 10px; font-size: 1rem; resize: none;
+    }
+    .contact-form button {
+      margin-top: 15px;
+      background: linear-gradient(45deg, #5a189a, #00b4d8);
+      color: #fff; padding: 12px 25px;
+      border: none; border-radius: 25px;
+      cursor: pointer; font-size: 1rem;
+      transition: 0.3s;
+    }
+    .contact-form button:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      background: #5a189a; color: #fff;
+      padding: 20px; text-align: center; margin-top: 40px;
+    }
+
+    @media (max-width: 880px) {
+      .contact { grid-template-columns: 1fr; }
+      .contact h2 { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- set cookie before translate loads -->
+  <script>
+    function setCookie(name, value, days) {
+      var expires = '';
+      if (days) { var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); expires='; expires='+d.toUTCString(); }
+      document.cookie = name+'='+value+expires+'; path=/';
+    }
+    (function(){
+      var saved = localStorage.getItem('preferredLang');
+      if(saved && saved!=='en'){ setCookie('googtrans','/en/'+saved,365); }
+      else{ setCookie('googtrans','/en/en',365); }
+    })();
+  </script>
+
+  <!-- NAVBAR -->
+  <header>
+    <h1>🌐 Pravaha</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-controls">
+      <a href="login.html" class="login-btn">Login/Register</a>
+      <button class="lang-btn" id="langBtn">🌐 Language</button>
+      <div class="lang-menu" id="langMenu">
+        <button data-lang="en">English</button>
+        <button data-lang="hi">Hindi (हिन्दी)</button>
+        <button data-lang="bn">Bengali (বাংলা)</button>
+        <button data-lang="te">Telugu (తెలుగు)</button>
+        <button data-lang="ta">Tamil (தமிழ்)</button>
+        <button data-lang="ml">Malayalam (മലയാളം)</button>
+        <button data-lang="kn">Kannada (ಕನ್ನಡ)</button>
+        <button data-lang="mr">Marathi (मराठी)</button>
+        <button data-lang="gu">Gujarati (ગુજરાતી)</button>
+        <button data-lang="pa">Punjabi (ਪੰਜਾਬੀ)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact">
+    <h2>Contact Us</h2>
+
+    <!-- contact info -->
+    <div class="contact-info">
+      <div>
+        <h3>📍 Address</h3>
+        <p>123 Pravaha Street, Bengaluru, India</p>
+      </div>
+      <div>
+        <h3>📞 Phone</h3>
+        <p>+91 98765 43210</p>
+      </div>
+      <div>
+        <h3>📧 Email</h3>
+        <p>support@pravaha.com</p>
+      </div>
+    </div>
+
+    <!-- contact form -->
+    <form class="contact-form">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="message">Your Message</label>
+      <textarea id="message" rows="6" placeholder="Write your message..." required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Pravaha | AI Multilingual Localization Engine</p>
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,te,ta,ml,kn,mr,gu,pa'
+      }, 'google_translate_element');
+      var saved = localStorage.getItem('preferredLang');
+      if(saved && saved!=='en'){ setTimeout(()=>trySetCombo(saved),600); }
+    }
+    function trySetCombo(lang){
+      var combo=document.querySelector('.goog-te-combo');
+      if(combo){ combo.value=lang; combo.dispatchEvent(new Event('change')); }
+    }
+
+    // language menu handling
+    (function(){
+      var langBtn=document.getElementById('langBtn');
+      var langMenu=document.getElementById('langMenu');
+      langBtn.addEventListener('click', e=>{
+        e.stopPropagation(); langMenu.classList.toggle('open');
+      });
+      langMenu.addEventListener('click', e=>{
+        var btn=e.target.closest('button[data-lang]');
+        if(!btn) return;
+        var lang=btn.getAttribute('data-lang');
+        localStorage.setItem('preferredLang', lang);
+        setCookie('googtrans','/en/'+lang,365);
+        setTimeout(()=>window.location.reload(),250);
+      });
+      document.addEventListener('click', e=>{
+        if(!langBtn.contains(e.target)&&!langMenu.contains(e.target)){
+          langMenu.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
